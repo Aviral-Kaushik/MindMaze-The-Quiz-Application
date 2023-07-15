@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.aviral.mindmaze.models.QuizListModel
 import com.aviral.mindmaze.repository.QuizListRepository
 
-class QuizListViewModel: ViewModel(), QuizListRepository.OnFirestoreTaskComplete {
+class QuizViewModel: ViewModel(), QuizListRepository.OnFirestoreTaskComplete {
 
     private val tag = "AvirelFirebase"
 

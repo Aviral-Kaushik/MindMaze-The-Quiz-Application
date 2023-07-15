@@ -6,10 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.aviral.mindmaze.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 class AuthViewModel(
-    private val application: Application
+    application: Application
 ): AndroidViewModel(application) {
 
 
@@ -34,8 +35,8 @@ class AuthViewModel(
     }
 
 
-    fun getCurrentUser(): FirebaseUser {
-        return authRepository.getCurrentUser()
+    fun getCurrentUser(): FirebaseUser? {
+        return FirebaseAuth.getInstance().currentUser
     }
 
 }

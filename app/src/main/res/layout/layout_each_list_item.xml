@@ -25,7 +25,7 @@
                 android:id="@+id/quiz_image"
                 android:layout_width="match_parent"
                 android:layout_height="198dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:contentDescription="@string/c_programming"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

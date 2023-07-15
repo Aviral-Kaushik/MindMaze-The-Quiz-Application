@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.aviral.mindmaze.R
 import com.aviral.mindmaze.databinding.FragmentDetailsBinding
-import com.aviral.mindmaze.models.QuizListModel
-import com.aviral.mindmaze.viewModels.QuizListViewModel
+import com.aviral.mindmaze.viewModels.QuizViewModel
 import com.bumptech.glide.Glide
 import kotlin.properties.Delegates
 
@@ -19,7 +18,7 @@ class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
 
-    private lateinit var viewModel: QuizListViewModel
+    private lateinit var viewModel: QuizViewModel
 
     private var totalQuestionCount by Delegates.notNull<Long>()
 
@@ -29,7 +28,7 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[QuizListViewModel::class.java]
+        viewModel = ViewModelProvider(this)[QuizViewModel::class.java]
     }
 
     override fun onCreateView(

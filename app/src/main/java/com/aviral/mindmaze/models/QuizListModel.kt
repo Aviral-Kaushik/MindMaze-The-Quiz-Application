@@ -9,4 +9,6 @@ data class QuizListModel(
     val questions: Long,
     val difficulty: String,
     val image: String
-)
+) {
+    constructor() : this("", "", 0L, "", "")
+}

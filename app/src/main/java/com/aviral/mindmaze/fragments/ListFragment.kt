@@ -12,21 +12,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aviral.mindmaze.R
 import com.aviral.mindmaze.adapters.QuizListAdapter
 import com.aviral.mindmaze.databinding.FragmentListBinding
-import com.aviral.mindmaze.viewModels.QuizListViewModel
+import com.aviral.mindmaze.viewModels.QuizViewModel
 
 
 class ListFragment : Fragment(), QuizListAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentListBinding
 
-    private lateinit var viewModel: QuizListViewModel
+    private lateinit var viewModel: QuizViewModel
 
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[QuizListViewModel::class.java]
+        viewModel = ViewModelProvider(this)[QuizViewModel::class.java]
     }
 
     override fun onCreateView(

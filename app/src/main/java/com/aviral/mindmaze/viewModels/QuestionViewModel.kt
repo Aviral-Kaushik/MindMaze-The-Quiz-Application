@@ -8,20 +8,27 @@ import com.aviral.mindmaze.models.QuestionModel
 import com.aviral.mindmaze.models.QuizListModel
 import com.aviral.mindmaze.repository.QuestionRepository
 
-class QuestionViewModel: ViewModel(), QuestionRepository.OnQuestionLoaded {
+class QuestionViewModel : ViewModel(), QuestionRepository.OnQuestionLoaded,
+    QuestionRepository.OnResultAdded, QuestionRepository.OnResultLoaded {
 
     private val tag = "AvirelFirebase"
 
     private val questionLiveData = MutableLiveData<List<QuestionModel>>()
 
-    private val questionRepository = QuestionRepository(this)
+    private val resultLiveData = MutableLiveData<HashMap<String, Int>>()
 
-    init {
-        questionRepository.getQuestions()
-    }
+    private val questionRepository = QuestionRepository(
+        this,
+        this,
+        this
+    )
 
     fun setQuizId(quizId: String) {
         questionRepository.setQuizId(quizId)
+    }
+
+    fun getQuestions() {
+        questionRepository.getQuestions()
     }
 
     override fun onLoad(questionModels: List<QuestionModel>) {
@@ -30,12 +37,31 @@ class QuestionViewModel: ViewModel(), QuestionRepository.OnQuestionLoaded {
 
     }
 
+    override fun onSubmit(): Boolean {
+        return true
+    }
+
+    fun getResult() {
+        questionRepository.getResult()
+    }
+    fun getResultLiveData(): LiveData<HashMap<String, Int>> {
+        return resultLiveData
+    }
+
+    override fun onResultLoaded(resultMap: HashMap<String, Int>) {
+        resultLiveData.value = resultMap
+    }
+
     override fun onError(e: Exception) {
         Log.d(tag, "onError: Exception: ${e.message}")
     }
 
     fun getQuestionLiveData(): LiveData<List<QuestionModel>> {
         return questionLiveData
+    }
+
+    fun addResult(resultMap: HashMap<String, Int>) {
+        questionRepository.addResult(resultMap)
     }
 
 }
