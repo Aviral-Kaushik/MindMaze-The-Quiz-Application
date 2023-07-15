@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/signinFragment"
-        android:name="com.aviral.mindmaze.fragments.SigninFragment"
+        android:name="com.aviral.mindmaze.fragments.SignInFragment"
         android:label="fragment_signin"
         tools:layout="@layout/fragment_signin" >
         <action
@@ -58,6 +58,10 @@
         <action
             android:id="@+id/action_detailsFragment_to_quizFragment"
             app:destination="@id/quizFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
@@ -67,6 +71,14 @@
         <action
             android:id="@+id/action_quizFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <argument
+            android:name="quizId"
+            app:argType="string"
+            android:defaultValue="null" />
+        <argument
+            android:name="totalQuestionCount"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"

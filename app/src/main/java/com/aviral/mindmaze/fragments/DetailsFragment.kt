@@ -1,60 +1,85 @@
 package com.aviral.mindmaze.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.aviral.mindmaze.R
+import com.aviral.mindmaze.databinding.FragmentDetailsBinding
+import com.aviral.mindmaze.models.QuizListModel
+import com.aviral.mindmaze.viewModels.QuizListViewModel
+import com.bumptech.glide.Glide
+import kotlin.properties.Delegates
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentDetailsBinding
+
+    private lateinit var viewModel: QuizListViewModel
+
+    private var totalQuestionCount by Delegates.notNull<Long>()
+
+    private lateinit var quizId: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        viewModel = ViewModelProvider(this)[QuizListViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val position: Int = arguments?.getInt("position") ?: 0
+
+        viewModel.getQuizLiveData().observe(viewLifecycleOwner) { value ->
+
+            val quizListModel = value[position]
+
+            binding.detailFragmentDifficulty.text = quizListModel.difficulty
+            binding.detailFragmentTitle.text = quizListModel.title
+            binding.detailFragmentQuestions.text = quizListModel.questions.toString()
+
+            Glide.with(view)
+                .load(quizListModel.image)
+                .into(binding.detailFragmentImage)
+
+            val handler = Handler()
+
+            handler.postDelayed({
+                binding.detailProgressBar.visibility = View.GONE
+            }, 2000)
+
+            totalQuestionCount = quizListModel.questions
+
+            quizId = quizListModel.quizId
+        }
+
+        binding.startQuizBtn.setOnClickListener {
+
+            val bundle = Bundle()
+            bundle.putString("quizId", quizId)
+            bundle.putLong("totalQuestionCount", totalQuestionCount)
+
+            Navigation.findNavController(view)
+                .navigate(R.id.action_detailsFragment_to_quizFragment, bundle)
+
+        }
+
     }
+
 }
